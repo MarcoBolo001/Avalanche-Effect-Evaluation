@@ -27,16 +27,13 @@ def flip_last_valid_bit(text):
 
 
 def character_difference_percentage(text1, text2):
-    # Assicurati che le stringhe abbiano la stessa lunghezza
     if len(text1) != len(text2):
-        raise ValueError("Le stringhe devono avere la stessa lunghezza per il confronto.")
+        raise ValueError("Strings must be of the same length")
 
-    # Conta i caratteri differenti
     differing_chars = sum(1 for a, b in zip(text1, text2) if a != b)
-    print(f"char diversi: {differing_chars}")
+    print(f"differing chars: {differing_chars}")
     print(text1)
     print(text2)
-    # Calcola la differenza percentuale
     percentage_difference = (differing_chars / len(text1)) * 100
 
     return percentage_difference
@@ -46,40 +43,34 @@ def bit_difference_percentage(text1, text2):
     if len(text1) != len(text2):
         raise ValueError("Strings must be of equal length.")
 
-    # Converti i testi in rappresentazioni binarie
     bin_text1 = ''.join(format(ord(c), '08b') for c in text1)
     bin_text2 = ''.join(format(ord(c), '08b') for c in text2)
 
-    # Calcola il numero di bit diversi
     differing_bits = sum(b1 != b2 for b1, b2 in zip(bin_text1, bin_text2))
 
-    # Calcola il numero totale di bit
     total_bits = len(bin_text1)
-    print(f"Bit diversi: {differing_bits}")
-    # Calcola la percentuale di bit diversi
+    print(f"differing bits: {differing_bits}")
     percentage_difference = (differing_bits / total_bits) * 100
     return percentage_difference
 
 
 def initial_avalanche_effect(plain_text, transposition_key, vigenere_key):
-    # Encrypt the original plaintext
+    # Encryption of the original plaintext
     #original_ciphertext = vigenere_cipher(transposition_cipher(plain_text, transposition_key), vigenere_key)
     original_ciphertext = transposition_cipher(vigenere_cipher(plain_text, vigenere_key), transposition_key)
-    # change the first character
     modified_text = flip_last_valid_bit(plain_text)
 
-    # Encrypt the modified plaintext
+    # Encryption of the modified plaintext
     #modified_ciphertext = vigenere_cipher(transposition_cipher(modified_text, transposition_key), vigenere_key)
     modified_ciphertext = transposition_cipher(vigenere_cipher(modified_text, vigenere_key), transposition_key)
 
-    # Calculate the percentage of differing characters
     diff_char_percentage = character_difference_percentage(original_ciphertext, modified_ciphertext)
     diff_bit_percentage = bit_difference_percentage(original_ciphertext, modified_ciphertext)
     return original_ciphertext, modified_ciphertext, diff_char_percentage, diff_bit_percentage
 
 
 def repeated_avalanche_effect(plain_text, transposition_key, vigenere_key, rounds):
-    # Change the first character
+
     modified_text = flip_last_valid_bit(plain_text)
 
     avalanche_effects_char = []
@@ -106,6 +97,7 @@ def repeated_avalanche_effect(plain_text, transposition_key, vigenere_key, round
 
         diff_bit_percentage = bit_difference_percentage(encrypted_text, encrypted_modified_text)
         avalanche_effects_bit.append(diff_bit_percentage)
+
         # Update the text for the next round of encryption
         current_text = encrypted_text
         modified_current_text = encrypted_modified_text
@@ -117,7 +109,7 @@ def repeated_avalanche_effect(plain_text, transposition_key, vigenere_key, round
 
 
 def repeated_avalanche_effect_all_ascii(plain_text, transposition_key, vigenere_key, rounds):
-    # Change the first character
+
     modified_text = flip_last_valid_bit(plain_text)
 
     avalanche_effects_bit = []
@@ -155,7 +147,7 @@ def repeated_avalanche_effect_all_ascii(plain_text, transposition_key, vigenere_
 
 
 def repeated_avalanche_effect_CBC(plain_text, transposition_key, vigenere_key, rounds):
-    # Change the first character
+
     modified_text = flip_last_valid_bit(plain_text)
 
     avalanche_effects_bit = []
@@ -190,7 +182,7 @@ def repeated_avalanche_effect_CBC(plain_text, transposition_key, vigenere_key, r
 
 
 def repeated_avalanche_effect_caesar(plain_text, transposition_key, caesar_shift, rounds):
-    # Change the first character
+
     modified_text = flip_last_valid_bit(plain_text)
 
     avalanche_effects_bit = []
